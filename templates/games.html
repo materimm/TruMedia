@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-3">
+      <div class="row">
+          <img src={{obj.playerImage}}>
+      </div>
+      <div class="row">
+        <img src={{obj.teamImage}}>
+        <h1>{{obj.name}}</h1>
+      </div>
+    </div>
+    <div class="col">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th>{{obj.total_stats.season}} stats</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>CMP%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <h4 class="mr-2">Weeks Played In: </h4>
+    <div class="btn-group" role="group" aria-label="Basic example">
+      {% for week in obj.weeks_played_in %}
+        <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Week {{week.week}} vs {{week.opponent}}"><img src={{week.oppImg}}></button>
+      {% endfor %}
+    </div>
+  </div>
+  {{obj}}
+</div> <!-- END container -->
+
+{% endblock %}
+{% block scripts %}
+  {{ super() }}
+  <!-- Custom JavaScript -->
+  <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row">
+  {% for player in players %}
+    <a href="{{ url_for('player', id=player.playerId) }}" style="text-decorations:none; color:inherit;">
+      <div class="col">
+        <div class="row">
+            <img src={{player.playerImage}}>
+        </div>
+        <div class="row">
+          <img src={{player.teamImage}}>
+          <h1>{{player.fullName}}</h1>
+        </div>
+      </div>
+    </a>
+  {% endfor %}
+  </div>
+</div> <!-- END container -->
+
+{% endblock %}
+{% block scripts %}
+  {{ super() }}
+  <!-- Custom JavaScript -->
+  <!-- <script src="{{ url_for('static', filename='js/player.js') }}"></script> -->
+{% endblock %}
