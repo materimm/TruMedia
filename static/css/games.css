@@ -1,0 +1,41 @@
+th, td {
+  text-align: center;
+}
+
+.stats_table_header{
+  color: #fff;
+}
+
+.stat {
+  font-weight: bold;
+  font-size: 30px;
+}
+
+.breadcrumb > .active,
+.breadcrumb > .active a {
+  color: black;
+}
+
+.breadcrumb a {
+  color: #36A2EB;
+}
+
+.breadcrumb {
+  background-color: #EBEBEB;
+}
+
+.player_text {
+  color: #000;
+  font-size: 18px;
+}
+
+.table-scroll {
+  position: relative;
+  height: 500px;
+  overflow: auto;
+  display: block;
+}
+
+.striped {
+  background-color: #EBEBEB;
+}

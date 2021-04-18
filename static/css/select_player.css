@@ -1,0 +1,17 @@
+.player_card:hover {
+  cursor: pointer;
+  box-shadow: 10px 10px 5px grey;
+}
+
+.breadcrumb > .active,
+.breadcrumb > .active a {
+  color: black;
+}
+
+.breadcrumb a {
+  color: #36A2EB;
+}
+
+.breadcrumb {
+  background-color: #EBEBEB;
+}

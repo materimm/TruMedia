@@ -1,22 +1,37 @@
 {% extends "base.html" %}
 {% block head %}
   {{ super() }}
+  <link href="{{ url_for('static', filename='css/select_player.css') }}" rel="stylesheet">
 {% endblock %}
 {% block content %}
 <div class="container">
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active">Select a QB</li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <h2>Select a Quarterback</h2>
+  </div>
   <div class="row">
   {% for player in players %}
-    <a href="{{ url_for('player', id=player.playerId) }}" style="text-decorations:none; color:inherit;">
-      <div class="col">
-        <div class="row">
-            <img src={{player.playerImage}}>
-        </div>
-        <div class="row">
-          <img src={{player.teamImage}}>
-          <h1>{{player.fullName}}</h1>
+    {% if player.fullName == "Baker Mayfield" %}
+      {% set team = "Cleveland Browns" %}
+    {% elif player.fullName == "Blake Bortles" %}
+      {% set team = "Jacksonville Jaguars" %}
+    {% elif player.fullName == "Derek Carr" %}
+      {% set team = "Oakland Raiders" %}
+    {% endif %}
+    <div class="col">
+      <div class="card player_card" style="width: 18rem;" onclick="window.location.href='{{ url_for('player', id=player.playerId) }}'">
+        <img src={{player.playerImage}} class="card-img-top">
+        <div class="card-body">
+          <h4 class="card-title">{{player.fullName}}</h4>
+          <p class="card-text"><img src={{player.teamImage}}> {{team}}</p>
         </div>
       </div>
-    </a>
+    </div>
   {% endfor %}
   </div>
 </div> <!-- END container -->
@@ -24,6 +39,4 @@
 {% endblock %}
 {% block scripts %}
   {{ super() }}
-  <!-- Custom JavaScript -->
-  <!-- <script src="{{ url_for('static', filename='js/player.js') }}"></script> -->
 {% endblock %}

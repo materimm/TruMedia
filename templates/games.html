@@ -1,43 +1,175 @@
 {% extends "base.html" %}
 {% block head %}
   {{ super() }}
+  <link href="{{ url_for('static', filename='css/games.css') }}" rel="stylesheet">
 {% endblock %}
 {% block content %}
 <div class="container">
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url_for('select_player') }}">Select a QB</a></li>
+      <li class="breadcrumb-item active">QB Stats</li>
+    </ol>
+  </nav>
+
   <div class="row">
-    <div class="col-3">
+    <h1>{{obj.name}}</h1>
+  </div>
+
+  <div class="row">
+    <div class="col-2">
       <div class="row">
           <img src={{obj.playerImage}}>
       </div>
+    </div>
+    <div class="col-3 ml-4">
       <div class="row">
-        <img src={{obj.teamImage}}>
-        <h1>{{obj.name}}</h1>
+        <img src={{obj.teamImage}}><span class="player_text pt-2 pl-2"> {{obj.team}}</span>
+      </div>
+      <div class="row">
+        <span class="player_text">Quarterback</span>
+      </div>
+      <div class="row">
+        <span class="player_text">{{obj.age}} years old</span>
+      </div>
+      <div class="row">
+        <span class="player_text">#{{obj.number}}</span>
       </div>
     </div>
     <div class="col">
-      <table class="table">
-        <thead class="thead-dark">
-          <tr>
-            <th>{{obj.total_stats.season}} stats</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>CMP%</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="row stats_table_header" style="background-color:{{obj.team_color}}">
+        <h4 class="pb-1 pt-2 pl-3">{{obj.total_stats.season}} Season Stats</h4>
+      </div>
+      <div class="row mt-1">
+        <div class="col">
+          <p align="center"><span class="stat_header" data-toggle="tooltip" title="Completions" data-placement="top">CMP</span>
+            <br>
+            <span class="stat">{{obj.total_stats.Cmp}}</span>
+          </p>
+        </div>
+        <div class="col">
+          <p align="center"><span class="stat_header" data-toggle="tooltip" title="Attempts" data-placement="top">Att</span>
+            <br>
+            <span class="stat">{{obj.total_stats.Att}}</span>
+          </p>
+        </div>
+        <div class="col">
+          <p align="center"><span class="stat_header" data-toggle="tooltip" title="Completion Percentage" data-placement="top">CMP%</span>
+            <br>
+            <span class="stat">{{obj.total_stats.Cmp_Percent}}</span>
+          </p>
+        </div>
+        <div class="col">
+          <p align="center"><span class="stat_header" data-toggle="tooltip" title="Passing Yards" data-placement="top">PsYds</span>
+            <br>
+            <span class="stat">{{obj.total_stats.PsYds}}</span>
+          </p>
+        </div>
+        <div class="col">
+          <p align="center"><span class="stat_header" data-toggle="tooltip" title="Passing Touchdowns" data-placement="top">PsTD</span>
+            <br>
+            <span class="stat">{{obj.total_stats.PsTD}}</span>
+          </p>
+        </div>
+        <div class="col">
+          <p align="center"><span class="stat_header" data-toggle="tooltip" title="Passing Yards Per Attempt" data-placement="top">Yd/Att</span>
+            <br>
+            <span class="stat">{{obj.total_stats.yds_per_att}}</span>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <p align="center"><span class="stat_header" data-toggle="tooltip" title="Sacks Taken" data-placement="top">Sack</span>
+            <br>
+            <span class="stat">{{obj.total_stats.Sack}}</span>
+          </p>
+        </div>
+        <div class="col">
+          <p align="center"><span class="stat_header" data-toggle="tooltip" title="Interceptions" data-placement="top">Int</span>
+            <br>
+            <span class="stat">{{obj.total_stats.Int}}</span>
+          </p>
+        </div>
+        <div class="col">
+          <p align="center"><span class="stat_header" data-toggle="tooltip" title="Rushing Attempts" data-placement="top">RshAtt</span>
+            <br>
+            <span class="stat">{{obj.total_stats.Rush}}</span>
+          </p>
+        </div>
+        <div class="col">
+          <p align="center"><span class="stat_header" data-toggle="tooltip" title="Rushing Yards" data-placement="top">RshYds</span>
+            <br>
+            <span class="stat">{{obj.total_stats.RshYds}}</span>
+          </p>
+        </div>
+        <div class="col">
+          <p align="center"><span class="stat_header" data-toggle="tooltip" title="Rushing Touchdowns" data-placement="top">RshTD</span>
+            <br>
+            <span class="stat">{{obj.total_stats.RshTD}}</span>
+          </p>
+        </div>
+        <div class="col">
+          <p align="center"><span class="stat_header" data-toggle="tooltip" title="Rushing Yards Per Attempt" data-placement="top">RshYPA</span>
+            <br>
+            <span class="stat">{{obj.total_stats.rush_yds_per_att}}</span>
+          </p>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <h4 class="mr-2">Weeks Played In: </h4>
-    <div class="btn-group" role="group" aria-label="Basic example">
-      {% for week in obj.weeks_played_in %}
-        <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Week {{week.week}} vs {{week.opponent}}"><img src={{week.oppImg}}></button>
-      {% endfor %}
+  </div> <!-- end header row-->
+  <div class="row" >
+    <div class="col" style="height: 400px">
+      <canvas id="cmp"></canvas>
     </div>
+    <div class="col" style="height: 400px">
+      <canvas id="ypa"></canvas>
+    </div>
+  </div> <!-- end line chart row-->
+  <div class="row mt-5">
+    <table class="table table-scroll">
+      <thead style="background-color:{{obj.team_color}}; color:#fff;">
+        <tr>
+          <th>Week</th>
+          <th>Date</th>
+          <th data-toggle="tooltip" title="Opponent" data-placement="top">Opp</th>
+          <th data-toggle="tooltip" title="Completions" data-placement="top">CMP</th>
+          <th data-toggle="tooltip" title="Attempts" data-placement="top">ATT</th>
+          <th data-toggle="tooltip" title="Completion Percentage" data-placement="top">CMP%</th>
+          <th data-toggle="tooltip" title="Passing Yards" data-placement="top">PsYds</th>
+          <th data-toggle="tooltip" title="Passing Yards Per Attempt" data-placement="top">Yd/Att</th>
+          <th data-toggle="tooltip" title="Passing Touchdowns" data-placement="top">PsTD</th>
+          <th data-toggle="tooltip" title="Sacks Taken" data-placement="top">Sack</th>
+          <th data-toggle="tooltip" title="Interceptions" data-placement="top">Int</th>
+          <th data-toggle="tooltip" title="Rushing Attempts" data-placement="top">RshAtt</th>
+          <th data-toggle="tooltip" title="Rushing Yards" data-placement="top">RshYds</th>
+          <th data-toggle="tooltip" title="Rushing Yards Per Attempt" data-placement="top">RshYPA</th>
+          <th data-toggle="tooltip" title="Rushing Touchdowns" data-placement="top">RshTDs</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for game in obj.games %}
+          <tr class="{{loop.cycle('', 'striped')}}">
+            <td>{{game.week}}</td>
+            <td>{{game.gameDate}}<br>{{game.gameTime}}</td>
+            <td><img src={{game.opponentImage}}> {{game.opponent}}</td>
+            <td>{{game.Cmp}}</td>
+            <td>{{game.Att}}</td>
+            <td>{{obj.cmpp_per_game[loop.index-1]}}</td>
+            <td>{{game.PsYds}}</td>
+            <td>{{obj.ypa_per_game[loop.index-1]}}</td>
+            <td>{{game.PsTD}}</td>
+            <td>{{game.Sack}}</td>
+            <td>{{game.Int}}</td>
+            <td>{{game.Rush}}</td>
+            <td>{{game.RshYds}}</td>
+            <td>{{obj.rypa_per_game[loop.index-1]}}</td>
+            <td>{{game.RshTD}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
-  {{obj}}
 </div> <!-- END container -->
 
 {% endblock %}
@@ -45,8 +177,8 @@
   {{ super() }}
   <!-- Custom JavaScript -->
   <script>
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    });
-</script>
+    //pass obj to javascript to be used for chartjs line graphs
+    var obj = "{{obj}}";
+  </script>
+  <script src="{{ url_for('static', filename='js/games.js') }}"></script>
 {% endblock %}
