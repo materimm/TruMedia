@@ -1,7 +1,6 @@
 from flask import Flask, render_template, redirect, url_for
 import apis as a
 
-#TODO https://stackabuse.com/deploying-a-flask-application-to-heroku/
 app = Flask(__name__)
 
 @app.route('/')
