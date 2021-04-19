@@ -20,3 +20,7 @@ def player(id=None):
         return redirect(url_for('select_player'))
     obj = a.get_player_games(id)
     return render_template('games.html', **locals())
+
+
+if __name__ == '__main__':
+    app.run(threaded=True, port=5000)

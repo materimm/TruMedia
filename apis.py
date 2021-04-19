@@ -6,7 +6,6 @@ TEMP_TOKEN = '83d58bba-e966-4b00-92fb-9bd34d00c5a7'
 TEMP_TOKEN_EXPIRES = 'Mon, 19 Apr 2021 14:32:38 GMT'
 BASE_URL = 'https://project.trumedianetworks.com/api/'
 
-
 # check to see if my temp token has expired
 def is_temp_token_expired():
     today = datetime.now()
@@ -28,14 +27,13 @@ def get_temp_token():
     if status_code != 200:
         print("ERROR: " + res_json['error'])
         return res_json['error']
-    TEMP_TOKEN = res_json['token']
-    TEMP_TOKEN_EXPIRES = res_json['expires']
+    return res_json['token'], res_json['expires']
 
 
 # access api to get all players
 def get_all_players():
     if is_temp_token_expired():
-        get_temp_token()
+        TEMP_TOKEN, TEMP_TOKEN_EXPIRES = get_temp_token()
     url = BASE_URL + 'nfl/players'
     headers = {'temptoken': TEMP_TOKEN}
     response = requests.get(url, headers=headers)
@@ -50,7 +48,7 @@ def get_all_players():
 # acess api to get player's game stats
 def get_player_games(id=None):
     if is_temp_token_expired():
-        get_temp_token()
+        TEMP_TOKEN, TEMP_TOKEN_EXPIRES = get_temp_token()
     if id == None:
         return "ERROR: No ID"
     url = BASE_URL + 'nfl/player/' + str(id)
